@@ -1,0 +1,20 @@
+From 831a7d58308bfa2ffb85569e6b2616bfc09d8cfb Mon Sep 17 00:00:00 2001
+From: Electric Worry <electricworry@users.noreply.github.com>
+Date: Mon, 18 Dec 2023 21:44:48 +0000
+Subject: [PATCH] Set CONFIG_ENV_SIZE for Orange Pi Zero 3.
+
+Upstream-Status: Inappropriate
+
+---
+ configs/orangepi_zero3_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configs/orangepi_zero3_defconfig b/configs/orangepi_zero3_defconfig
+index e59044f663..ba061075d8 100644
+--- a/configs/orangepi_zero3_defconfig
++++ b/configs/orangepi_zero3_defconfig
+@@ -28,3 +28,4 @@ CONFIG_SPI=y
+ CONFIG_USB_EHCI_HCD=y
+ CONFIG_USB_OHCI_HCD=y
+ CONFIG_USB_MUSB_GADGET=y
++CONFIG_ENV_SIZE=0x20000

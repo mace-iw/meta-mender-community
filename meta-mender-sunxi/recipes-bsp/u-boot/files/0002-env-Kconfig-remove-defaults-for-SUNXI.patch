@@ -1,4 +1,4 @@
-From b8333c057577b3290b54d1dfc07e987a4c59163b Mon Sep 17 00:00:00 2001
+From fbaec23e8b59fe52f28aaddd0ab43787a7d2d855 Mon Sep 17 00:00:00 2001
 From: Marek Belisko <marek.belisko@open-nandra.com>
 Date: Thu, 15 Dec 2022 12:59:25 +0100
 Subject: [PATCH] env: Kconfig: remove defaults for SUNXI
@@ -7,16 +7,18 @@ That is ENV_IS_IN_FAT and the default offset. Mender build will set
 up these correctly. Also set ENV_IS_IN_MMC by default for all SUNXI
 boards to avoid updating each specific defconfig.
 
+Upstream-Status: Inappropriate
 Signed-off-by: Mirza Krak <mirza.krak@northern.tech>
+
 ---
- env/Kconfig | 19 +------------------
- 1 file changed, 1 insertion(+), 18 deletions(-)
+ env/Kconfig | 24 +-----------------------
+ 1 file changed, 1 insertion(+), 23 deletions(-)
 
 diff --git a/env/Kconfig b/env/Kconfig
-index 06d72bad1d..a346ba2795 100644
+index f5f0969233..062418e56f 100644
 --- a/env/Kconfig
 +++ b/env/Kconfig
-@@ -58,7 +58,6 @@ config ENV_IS_IN_FAT
+@@ -97,7 +97,6 @@ config ENV_IS_IN_FAT
  	bool "Environment is in a FAT filesystem"
  	depends on !CHAIN_OF_TRUST
  	default y if ARCH_BCM283X
@@ -24,7 +26,7 @@ index 06d72bad1d..a346ba2795 100644
  	default y if MMC_OMAP_HS && TI_COMMON_CMD_OPTIONS
  	select FS_FAT
  	select FAT_WRITE
-@@ -156,6 +155,7 @@ config ENV_IS_IN_MMC
+@@ -195,6 +194,7 @@ config ENV_IS_IN_MMC
  	depends on !CHAIN_OF_TRUST
  	depends on MMC
  	default y if ARCH_EXYNOS4
@@ -32,7 +34,7 @@ index 06d72bad1d..a346ba2795 100644
  	default y if MX6SX || MX7D
  	default y if TEGRA30 || TEGRA124
  	default y if TEGRA_ARMV8_COMMON
-@@ -535,23 +535,6 @@ config ENV_ADDR_REDUND
+@@ -561,28 +561,6 @@ config ENV_ADDR_REDUND
  	  Offset from the start of the device (or partition) of the redundant
  	  environment location.
  
@@ -42,20 +44,22 @@ index 06d72bad1d..a346ba2795 100644
 -		    ENV_IS_IN_SPI_FLASH
 -	default 0x3f8000 if ARCH_ROCKCHIP && ENV_IS_IN_MMC
 -	default 0x140000 if ARCH_ROCKCHIP && ENV_IS_IN_SPI_FLASH
--	default 0x88000 if ARCH_SUNXI
+-	default 0xF0000 if ARCH_SUNXI
 -	default 0xE0000 if ARCH_ZYNQ
 -	default 0x1E00000 if ARCH_ZYNQMP
--	default 0x7F40000 if ARCH_VERSAL
--	default 0 if ARC
+-	default 0x7F40000 if ARCH_VERSAL || ARCH_VERSAL_NET
+-	default 0x0 if ARC
 -	default 0x140000 if ARCH_AT91
 -	default 0x260000 if ARCH_OMAP2PLUS
 -	default 0x1080000 if MICROBLAZE && ENV_IS_IN_SPI_FLASH
 -	help
--	  Offset from the start of the device (or partition)
+-	  Offset from the start of the device (or partition).
+-
+-	  This offset may be interpreted differently depending on the chosen
+-	  ENV_IS_IN_* options. For example, for ENV_IS_IN_MMC=y, this offset may
+-	  be negative to indicate an offset backwards from the end of the
+-	  partition. See the relevant help messages for more details.
 -
  config ENV_OFFSET_REDUND
  	hex "Redundant environment offset"
  	depends on (ENV_IS_IN_EEPROM || ENV_IS_IN_MMC || ENV_IS_IN_NAND || \
--- 
-2.25.1
-
